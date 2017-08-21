@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2017 at 03:30 PM
+-- Generation Time: Aug 21, 2017 at 06:01 PM
 -- Server version: 5.6.31
 -- PHP Version: 7.0.10
 
@@ -34,6 +34,20 @@ CREATE TABLE IF NOT EXISTS `product` (
   `product_quantity` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_users`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_users` (
+  `user_id` int(11) unsigned NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `status` enum('0','100','500') NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Indexes for dumped tables
 --
@@ -45,6 +59,14 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`);
 
 --
+-- Indexes for table `tbl_users`
+--
+ALTER TABLE `tbl_users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -53,6 +75,11 @@ ALTER TABLE `product`
 --
 ALTER TABLE `product`
   MODIFY `product_id` int(3) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `tbl_users`
+--
+ALTER TABLE `tbl_users`
+  MODIFY `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
