@@ -1,20 +1,8 @@
 <?php
 	include "dbconnect.php";
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-	session_start();
-
-	if (isset($_SESSION["session_id"]) == false) {
-		echo "ยังบ่ได้ Login นะงับ<br>";
-		echo "<a href='login.php'>เข้าสูระบบ</a>";
-		exit;
-	}
-
-	if ($_SESSION["username"] != "admin") {
-		echo "Admin Only<br>";
-		echo "<a href='login.php'>เข้าสู้ระบบ</a>";
-		exit;
-	}
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+include 'session.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
