@@ -1,11 +1,9 @@
 <?php
         session_start();
-        if (!isset($_SESSION['is_admin'])) {
+        if (!isset($_SESSION['is_admin']) && !isset($_SESSION['is_member']) && !isset($_SESSION['is_user'])){
             header("Location: index.php");
-        }else if (!isset($_SESSION['is_member'])) {
-            header("Location: help.php");
         }
-        // require 'dbconnect.php';
+
         $session_login_id = $_SESSION['user_id'];
 
         $qry_user = "SELECT * FROM tbl_users WHERE user_id='$session_login_id'";

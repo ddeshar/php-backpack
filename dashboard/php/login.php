@@ -17,13 +17,18 @@
         session_start();
         $row_user = mysqli_fetch_array($result_user,MYSQLI_ASSOC);
         $_SESSION['user_id'] = $row_user['user_id'];
+
         if ($row_user['status'] == 500) {
           $_SESSION['is_admin'] = 500;
+          $_SESSION['login_username'] = $row_user['login_username'];
           header("Location: admin.php");
+
         }elseif ($row_user['status'] == 100) {
           $_SESSION['is_member'] = 100;
+          $_SESSION['login_username'] = $row_user['login_username'];
           header("Location: member.php");
-        }else{
+
+        }elseif ($row_user['status'] == 0) {
           $_SESSION['is_user'] = 0;
           $_SESSION['login_username'] = $row_user['login_username'];
           header("Location: user.php");
