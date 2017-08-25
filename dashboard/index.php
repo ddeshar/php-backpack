@@ -67,7 +67,7 @@ require 'include/dbconnect.php';
     </section>
     <section class="login-content">
       <div class="logo">
-        <h1>Vali</h1>
+        <h1>Newa</h1>
       </div>
       <div class="login-box">
         <form class="login-form" action="index.php" method="post">

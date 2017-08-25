@@ -1,7 +1,7 @@
 <body class="sidebar-mini fixed">
   <div class="wrapper">
     <!-- Navbar-->
-    <header class="main-header hidden-print"><a class="logo" href="index.html">Vali</a>
+    <header class="main-header hidden-print"><a class="logo" href="admin.php">Newa</a>
       <nav class="navbar navbar-static-top">
         <!-- Sidebar toggle button--><a class="sidebar-toggle" href="#" data-toggle="offcanvas"></a>
         <!-- Navbar Right Menu-->
