@@ -1,9 +1,13 @@
 <?php
         session_start();
-        if (!isset($_SESSION['is_admin']) && !isset($_SESSION['is_member']) && !isset($_SESSION['is_user'])){
-            header("Location: index.php");
-        }
-
+        // if (!isset($_SESSION['is_admin'])) {
+        //     header("Location: admin.php");
+        // }else if (!isset($_SESSION['is_member'])) {
+        //     header("Location: member.php");
+        // }else if (!isset($_SESSION['is_user'])) {
+        //     header("Location: user.php");
+        // }
+        // require 'dbconnect.php';
         $session_login_id = $_SESSION['user_id'];
 
         $qry_user = "SELECT * FROM tbl_users WHERE user_id='$session_login_id'";
