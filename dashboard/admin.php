@@ -47,14 +47,16 @@ EOT;
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="widget-small danger"><i class="icon fa fa-star fa-3x"></i>
-              <div class="info">
-                <h4>Stars</h4>
-                <p><b>500</b></p>
+          <?php if (isset($_SESSION['is_admin'])): ?>
+            <div class="col-md-3">
+              <div class="widget-small danger"><i class="icon fa fa-star fa-3x"></i>
+                <div class="info">
+                  <h4>Stars</h4>
+                  <p><b>500</b></p>
+                </div>
               </div>
             </div>
-          </div>
+          <?php endif; ?>
         </div>
       </div>
 <?php

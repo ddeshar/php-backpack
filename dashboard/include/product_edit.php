@@ -1,4 +1,5 @@
 <?php
+  require_once 'include/permission/admin.php';
   // Form Submit
   if (isset($_POST["btnEdit"])) {
     $pid = $_POST["pid"];
