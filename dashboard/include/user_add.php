@@ -1,16 +1,52 @@
 <?php
+require_once 'include/permission/admin.php';
+
   if (isset($_POST["btnsubmit"])) {
 
+    $login_firstname = $_POST['firstname'];
+    $login_lastname = $_POST['lastname'];
     $login_username = $_POST['username'];
     $login_password = $_POST['password'];
     $login_email = $_POST['email'];
     $login_status = $_POST['status'];
+    // $login_avatar = $_POST['avatar'];
+
+    $imgFile = $_FILES['avatar']['name'];
+    $tmp_dir = $_FILES['avatar']['tmp_name'];
+    $imgSize = $_FILES['avatar']['size'];
 
     //เข้ารหัส รหัสผ่าน
     $salt = 'tikde78uj4ujuhlaoikiksakeidke';
     $hash_login_password = hash_hmac('sha256', $login_password, $salt);
 
-    $query = "INSERT INTO tbl_users (username,password,email,status) VALUES ('$login_username','$hash_login_password','$login_email','$login_status')";
+
+    $upload_dir = 'assets/images/users/'; // upload directory
+
+    $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
+
+    // valid image extensions
+    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+
+    // rename uploading image
+    $avatar = rand(1000,1000000).".".$imgExt;
+
+    // allow valid image file formats
+    if(in_array($imgExt, $valid_extensions)){
+      // Check file size '5MB'
+      if($imgSize < 5000000)				{
+        move_uploaded_file($tmp_dir,$upload_dir.$avatar);
+      }
+      else{
+        $errMSG = "Sorry, your file is too large.";
+      }
+    }
+    else{
+      $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+    }
+// echo $avatar;
+// exit;
+    $query = "INSERT INTO tbl_users (firstname,lastname,username,password,email,status,avatar)
+    VALUES ('$login_firstname','$login_lastname','$login_username','$hash_login_password','$login_email','$login_status','$avatar')";
 
     $result = mysqli_query($conn,$query);
 
@@ -24,7 +60,7 @@
       die("Query Failed" . mysqli_error($conn));
       // echo "<font color='red'>SQL Error</font><hr>";
     }
-    // 
+    //
     // if ($result) {
     //     header("Location: user.php");
     // } else {
@@ -35,9 +71,21 @@
 <div class="row">
   <div class="col-md-8">
     <div class="card">
-      <h3 class="card-title">Add Product</h3>
+      <h3 class="card-title">Add User</h3>
       <div class="card-body">
-        <form action="" method="post" class="form-horizontal">
+        <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+          <div class="form-group">
+            <label class="control-label col-md-3">Firstname :</label>
+            <div class="col-md-8">
+              <input class="form-control" name="firstname" type="text">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3">Lastname :</label>
+            <div class="col-md-8">
+              <input class="form-control" name="lastname" type="text">
+            </div>
+          </div>
           <div class="form-group">
             <label class="control-label col-md-3">Username :</label>
             <div class="col-md-8">
@@ -68,10 +116,17 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label class="control-label col-md-3">Avatar :</label>
+            <div class="col-md-8">
+              <input class="form-control" name="avatar" type="file">
+            </div>
+          </div>
+
           <div class="card-footer">
             <div class="row">
               <div class="col-md-8 col-md-offset-3">
-                <button class="btn btn-primary icon-btn" type="submit" name="btnsubmit" value="send"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add Product</button>
+                <button class="btn btn-primary icon-btn" type="submit" name="btnsubmit" value="send"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add User</button>
               </div>
             </div>
           </div>

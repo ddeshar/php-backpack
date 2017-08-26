@@ -2,6 +2,8 @@
   // Form Submit
   if (isset($_POST["btnEdit"])) {
     $pid = $_POST["pid"];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
     $username = $_POST["username"];
     $password = $_POST["password"];
     $email = $_POST["email"];
@@ -10,7 +12,45 @@
     $salt = 'tikde78uj4ujuhlaoikiksakeidke';
     $hash_login_password = hash_hmac('sha256', $login_password, $salt);
 
-    $sql = "update tbl_users set username='$username', password='$hash_login_password', email='$email', status='$status' where user_id='$pid'";
+    $imgFile = $_FILES['avatar']['name'];
+    $tmp_dir = $_FILES['avatar']['tmp_name'];
+    $imgSize = $_FILES['avatar']['size'];
+
+    if($imgFile){
+      $upload_dir = 'assets/images/users/'; // upload directory
+      $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
+      $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+      $avatar = rand(1000,1000000).".".$imgExt;
+      if(in_array($imgExt, $valid_extensions))
+      {
+        if($imgSize < 5000000){
+
+          // chown($TempDirectory."/".$FileName,666); //Insert an Invalid UserId to set to Nobody Owern; 666 is my standard for "Nobody" 
+// unlink($TempDirectory."/".$FileName);
+
+
+          chown($upload_dir.$edit_row['avatar'],666);
+          unlink($upload_dir.$edit_row['avatar']);
+          move_uploaded_file($tmp_dir,$upload_dir.$avatar);
+        }
+        else
+        {
+          $errMSG = "Sorry, your file is too large it should be less then 5MB";
+        }
+      }
+      else
+      {
+        $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      }
+    }
+    else{
+      // if no image selected the old image remain as it is.
+      $avatar = $edit_row['avatar']; // old image from database
+    }
+
+    exit;
+
+    $sql = "UPDATE tbl_users SET firstname='$firstname', lastname='$lastname', username='$username', password='$hash_login_password', email='$email', status='$status', avatar='$avatar' where user_id='$pid'";
     //echo $sql;exit;
     $result = mysqli_query($conn, $sql);
     if ($result) {
@@ -29,16 +69,22 @@
     if (mysqli_num_rows($result) > 0) {
       $row = mysqli_fetch_array($result);
       $pid = $row["user_id"];
+      $firstname = $row["firstname"];
+      $lastname = $row["lastname"];
       $username = $row["username"];
       $password = $row["password"];
       $email = $row["email"];
       $status = $row["status"];
+      $avatar = $row["avatar"];
     }else{
       $pid = "";
+      $firstname = "";
+      $lastname = "";
       $username = "";
       $password = "";
       $email = "";
       $status = "";
+      $avatar = "";
     }
   }
 ?>
@@ -48,7 +94,20 @@
     <div class="card">
       <h3 class="card-title">Edit Product</h3>
       <div class="card-body">
-        <form action="" method="post" class="form-horizontal">
+        <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+
+          <div class="form-group">
+            <label class="control-label col-md-3">Firstname :</label>
+            <div class="col-md-8">
+              <input class="form-control" name="firstname" value="<?php echo "$firstname"; ?>" type="text">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3">Lastname :</label>
+            <div class="col-md-8">
+              <input class="form-control" name="lastname" value="<?php echo "$lastname"; ?>" type="text">
+            </div>
+          </div>
 
           <div class="form-group">
             <label class="control-label col-md-3">Username :</label>
@@ -86,6 +145,14 @@
                 <option value="100" >member</option>
                 <option value="500" >admin</option>
               </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3">Avatar :</label>
+            <div class="col-md-8">
+              <p><img src="assets/images/users/<?php echo $avatar; ?>" height="150" width="150" /></p>
+              <input class="form-control" name="avatar" value="<?php echo "$avatar"; ?>" type="file" accept="image/*">
             </div>
           </div>
 
