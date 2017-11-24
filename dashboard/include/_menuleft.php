@@ -12,6 +12,7 @@
       <li <?php if($page == 'dashboard'){ echo 'class="active"';} ?>><a href="admin.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
       <li <?php if($page == 'product') {echo 'class="active"';} ?>><a href="product.php"><i class="fa fa-dashboard"></i><span>product</span></span></a></li>
       <li <?php if($page == 'user') {echo 'class="active"';} ?>><a href="user.php"><i class="fa fa-dashboard"></i><span>user</span></span></a></li>
+      <li <?php if($page == 'thaiaddress') {echo 'class="active"';} ?>><a href="thaiaddress.php"><i class="fa fa-dashboard"></i><span>Thai Address</span></span></a></li>
       <li class="treeview"><a href="#"><i class="fa fa-laptop"></i><span>UI Elements</span><i class="fa fa-angle-right"></i></a>
         <ul class="treeview-menu">
           <li><a href="#"><i class="fa fa-circle-o"></i> Bootstrap Elements</a></li>
