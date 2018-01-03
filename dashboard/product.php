@@ -18,19 +18,15 @@ EOT;
             $source = '';
           }
 
-          switch ($source) {
-            case 'product_add';
-            include "include/product_add.php";
-            break;
+            if ($source == "product_add") {
+              include "include/products/product_add.php";
 
-            case 'product_edit':
-            include "include/product_edit.php";
-            break;
-
-            default:
-            include "include/view_all_products.php";
-            break;
-          }
+            } else if ($source == "product_edit"){
+              include "include/products/product_edit.php";
+              
+            }else{
+              include "include/products/view_all_products.php";
+            }
         ?>
       </div>
 

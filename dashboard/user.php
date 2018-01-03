@@ -18,19 +18,15 @@ EOT;
             $source = '';
           }
 
-          switch ($source) {
-            case 'user_add';
-            include "include/user_add.php";
-            break;
+            if ($source == "user_add") {
+              include "include/users/user_add.php";
 
-            case 'user_edit':
-            include "include/user_edit.php";
-            break;
-
-            default:
-            include "include/view_all_users.php";
-            break;
-          }
+            } else if ($source == "user_edit"){
+              include "include/users/user_edit.php";
+              
+            }else{
+              include "include/users/view_all_users.php";
+            }
         ?>
       </div>
 
@@ -41,6 +37,31 @@ EOT;
 <script type="text/javascript" src="assets/js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+<script>
+  $(document).ready(function() {
+      var brand = document.getElementById('logo-id');
+      brand.className = 'attachment_upload';
+      brand.onchange = function() {
+          document.getElementById('fakeUploadLogo').value = this.value.substring(12);
+      };
+
+      // Source: http://stackoverflow.com/a/4459419/6396981
+      function readURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              
+              reader.onload = function(e) {
+                  $('.img-preview').attr('src', e.target.result);
+              };
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+      $("#logo-id").change(function() {
+          readURL(this);
+      });
+  });
+</script>
 
 </body>
 </html>

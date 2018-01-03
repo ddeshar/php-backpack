@@ -1,7 +1,14 @@
 <aside class="main-sidebar hidden-print">
   <section class="sidebar">
     <div class="user-panel">
-      <div class="pull-left image"><img class="img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image"></div>
+        <?php
+        if (empty($s_login_avatar)) {
+          $manucha = "user.png";
+        }else{
+          $manucha = $s_login_avatar;
+       }
+        ?> 
+      <div class="pull-left image"><img class="img-circle" src="assets/images/users/<?=$manucha?>" alt="User Image"></div>
       <div class="pull-left info">
         <p><?=$s_login_username?></p>
         <p class="designation"><?=$s_login_email?></p>

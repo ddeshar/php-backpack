@@ -75,7 +75,7 @@ require 'include/dbconnect.php';
           
           <div class="form-group">
             <label class="control-label">USERNAME</label>
-            <input class="form-control" name="username" type="text" placeholder="Email" autofocus>
+            <input class="form-control" name="username" type="text" placeholder="Username" autofocus>
           </div>
           <div class="form-group">
             <label class="control-label">PASSWORD</label>

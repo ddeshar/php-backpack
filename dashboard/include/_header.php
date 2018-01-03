@@ -1,8 +1,13 @@
 <?php
 	include "dbconnect.php";
+	include "function.php";
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 include 'session.php';
+    if(isset($_SESSION['user_id'])) {
+    } else {
+      header("location: index.php");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="th">

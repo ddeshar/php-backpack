@@ -8,57 +8,43 @@
     $password = $_POST["password"];
     $email = $_POST["email"];
     $status = $_POST["status"];
+    $imgFile        = $_FILES["avatar"]["name"];
 
     $salt = 'tikde78uj4ujuhlaoikiksakeidke';
-    $hash_login_password = hash_hmac('sha256', $login_password, $salt);
-
-    $imgFile = $_FILES['avatar']['name'];
-    $tmp_dir = $_FILES['avatar']['tmp_name'];
-    $imgSize = $_FILES['avatar']['size'];
+    $hash_login_password = hash_hmac('sha256', $password, $salt);
 
     if($imgFile){
-      $upload_dir = 'assets/images/users/'; // upload directory
-      $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
-      $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
-      $avatar = rand(1000,1000000).".".$imgExt;
-      if(in_array($imgExt, $valid_extensions))
-      {
-        if($imgSize < 5000000){
+      $temp = explode(".", $_FILES["avatar"]["name"]);
+      $newfilename = round(microtime(true)) . '.' . end($temp);
+      $tmp_dir = $_FILES['avatar']['tmp_name'];
+      // $upload_dir = $_SERVER['DOCUMENT_ROOT'].'../assets/images/users/'; // upload directory For SERVER
+      $upload_dir = $_SERVER['PHP_SELF'].'/../assets/images/users/'; // upload directory For local
 
-          // chown($TempDirectory."/".$FileName,666); //Insert an Invalid UserId to set to Nobody Owern; 666 is my standard for "Nobody" 
-// unlink($TempDirectory."/".$FileName);
-
-
-          chown($upload_dir.$edit_row['avatar'],666);
-          unlink($upload_dir.$edit_row['avatar']);
-          move_uploaded_file($tmp_dir,$upload_dir.$avatar);
+      move_uploaded_file($tmp_dir,$upload_dir.$newfilename);
+      
+      // move_uploaded_file($_FILES["avatar"]["tmp_name"], dirname($_SERVER['DOCUMENT_ROOT']) . "/assets/images/users/" . $newfilename);
+      
+      $qry=mysqli_query($conn,"SELECT avatar FROM tbl_users WHERE user_id = '$pid'");
+      $row=mysqli_fetch_assoc($qry);
+      $delimg = $row['avatar'];
+      move_uploaded_file($tmp_dir,$upload_dir.$newfilename);
+      unlink($upload_dir.$delimg);
+    }else{
+      $query = "SELECT avatar FROM tbl_users WHERE user_id = '$pid'";
+      $select_image = mysqli_query($conn,$query);
+        while($row = mysqli_fetch_array($select_image)) {
+          $newfilename = $row['avatar'];
         }
-        else
-        {
-          $errMSG = "Sorry, your file is too large it should be less then 5MB";
-        }
-      }
-      else
-      {
-        $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-      }
     }
-    else{
-      // if no image selected the old image remain as it is.
-      $avatar = $edit_row['avatar']; // old image from database
-    }
-
-    exit;
-
-    $sql = "UPDATE tbl_users SET firstname='$firstname', lastname='$lastname', username='$username', password='$hash_login_password', email='$email', status='$status', avatar='$avatar' where user_id='$pid'";
-    //echo $sql;exit;
+    
+    $sql = "UPDATE tbl_users SET firstname='$firstname', lastname='$lastname', username='$username', password='$hash_login_password', email='$email', status='$status', avatar='$newfilename' where user_id='$pid'";
+    // echo $sql;exit;
     $result = mysqli_query($conn, $sql);
     if ($result) {
       echo "<script type='text/javascript'>";
       echo "alert('แก้ไขสินค้าสำเร็จ');";
       echo "window.location='user.php';";
       echo "</script>";
-      //header('location: admin_product.php');
     }else{
       echo "<font color='red'>SQL Error</font><hr>";
     }
@@ -72,7 +58,6 @@
       $firstname = $row["firstname"];
       $lastname = $row["lastname"];
       $username = $row["username"];
-      $password = $row["password"];
       $email = $row["email"];
       $status = $row["status"];
       $avatar = $row["avatar"];
@@ -81,13 +66,13 @@
       $firstname = "";
       $lastname = "";
       $username = "";
-      $password = "";
       $email = "";
       $status = "";
       $avatar = "";
     }
   }
 ?>
+
 
 <div class="row">
   <div class="col-md-8">
@@ -151,8 +136,11 @@
           <div class="form-group">
             <label class="control-label col-md-3">Avatar :</label>
             <div class="col-md-8">
-              <p><img src="assets/images/users/<?php echo $avatar; ?>" height="150" width="150" /></p>
-              <input class="form-control" name="avatar" value="<?php echo "$avatar"; ?>" type="file" accept="image/*">
+              <p>
+                <img class="thumbnail img-preview" src="assets/images/users/<?php echo $avatar; ?>" height="auto" width="150" />
+                <!-- <img class="thumbnail img-preview" src="#" title="" width="100%" height="auto"> -->
+              </p>
+              <input class="form-control" name="avatar" value="<?php echo "$avatar"; ?>" type="file" accept="image/*" id="logo-id">
             </div>
           </div>
 

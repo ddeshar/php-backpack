@@ -9,18 +9,18 @@ require_once 'include/permission/admin.php';
     $login_password = $_POST['password'];
     $login_email = $_POST['email'];
     $login_status = $_POST['status'];
-    // $login_avatar = $_POST['avatar'];
-
-    $imgFile = $_FILES['avatar']['name'];
-    $tmp_dir = $_FILES['avatar']['tmp_name'];
-    $imgSize = $_FILES['avatar']['size'];
 
     //เข้ารหัส รหัสผ่าน
     $salt = 'tikde78uj4ujuhlaoikiksakeidke';
     $hash_login_password = hash_hmac('sha256', $login_password, $salt);
 
+    $imgFile = $_FILES['avatar']['name'];
+    $tmp_dir = $_FILES['avatar']['tmp_name'];
+    $imgSize = $_FILES['avatar']['size'];
 
-    $upload_dir = 'assets/images/users/'; // upload directory
+    // $upload_dir = $_SERVER['DOCUMENT_ROOT'].'/../assets/images/users/'; // upload directory
+    $upload_dir = $_SERVER['PHP_SELF'].'/../assets/images/users/'; // upload directory For local
+
 
     $imgExt = strtolower(pathinfo($imgFile,PATHINFO_EXTENSION)); // get image extension
 
@@ -43,11 +43,11 @@ require_once 'include/permission/admin.php';
     else{
       $errMSG = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
     }
-// echo $avatar;
-// exit;
     $query = "INSERT INTO tbl_users (firstname,lastname,username,password,email,status,avatar)
     VALUES ('$login_firstname','$login_lastname','$login_username','$hash_login_password','$login_email','$login_status','$avatar')";
-
+    
+    // echo $query; exit;
+    
     $result = mysqli_query($conn,$query);
 
     if ($result) {
@@ -55,23 +55,17 @@ require_once 'include/permission/admin.php';
       echo "alert('เพิมเสร็จแล้ว');";
       echo "window.location='user.php';";
       echo "</script>";
-      //header('location: admin_product.php');
     }else{
       die("Query Failed" . mysqli_error($conn));
-      // echo "<font color='red'>SQL Error</font><hr>";
     }
-    //
-    // if ($result) {
-    //     header("Location: user.php");
-    // } else {
-    //     echo "เกิดข้อผิดพลาด ".  mysqli_error($conn);
-    // }
+    
   }
+
 ?>
 <div class="row">
   <div class="col-md-8">
     <div class="card">
-      <h3 class="card-title">Add User</h3>
+      <h3 class="card-title">Add User555</h3>
       <div class="card-body">
         <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
           <div class="form-group">
@@ -95,7 +89,7 @@ require_once 'include/permission/admin.php';
           <div class="form-group">
             <label class="control-label col-md-3">Password :</label>
             <div class="col-md-8">
-              <input class="form-control col-md-8" name="password" type="text">
+              <input class="form-control col-md-8" name="password" type="password">
             </div>
           </div>
           <div class="form-group">
@@ -119,7 +113,8 @@ require_once 'include/permission/admin.php';
           <div class="form-group">
             <label class="control-label col-md-3">Avatar :</label>
             <div class="col-md-8">
-              <input class="form-control" name="avatar" type="file">
+              <input class="form-control" name="avatar" type="file" id="logo-id">
+              <img class="thumbnail img-preview" src="#" title="" width="100%" height="auto">
             </div>
           </div>
 
